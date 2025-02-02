@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <title>Python Tutor</title>
+  <link rel="stylesheet" href="style.css">
+</head>     
+  
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="Images/tutor.png" alt="PYTHON TUTOR" class="logo">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home" onclick="showSection('home')">Home</a></li>
+        <li><a href="#about" onclick="showSection('about')">About</a></li>
+        <li><a href="#contact" onclick="showSection('contact')">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home">
+      <h1>Welcome to the Python Tutor!</h1>
+      <p>Learn Python with ease! Our friendly tutor is here to guide you step-by-step. Just enter your question or instructions, and we'll get started!</p>
+    </section>
+
+    <section id="about">
+      <h2>About the Python Tutor</h2>
+      <p>The Python Tutor is designed to help beginners understand Python programming concepts through simple and interactive lessons. Our tutor will provide examples, tips, and guidance throughout your learning journey.</p>
+      <img src="images/Python-Tutor.png" alt="Python Tutor Guide" class="about-image">
+
+      <h2>Ask Your Question</h2>
+      <form id="questionForm">
+        <div class="prompt-box">
+          <label>
+            <input name="prompt" id="userQuestion" placeholder="Write Question" type="text" value="">
+          </label>
+          <button type="submit">Go</button>
+        </div>
+      </form>
+
+      <h3>Your Question:</h3>
+      <p id="output">(Results will appear here)</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>Get in touch with us for more information or questions.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Python Tutor. All rights reserved.</p>
+  </footer>
+
+  <script type="module" src="/main.js"></script>
+  <script src="https://unpkg.com/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
+
+  <script>
+    
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('main > section');
+      sections.forEach(section => {
+        section.style.display = 'none';
+      });
+
+      const sectionToShow = document.getElementById(sectionId);
+      if (sectionToShow) {
+        sectionToShow.style.display = 'block';
+      }
+    }
+
+    window.onload = function() {
+      showSection('home');
+    };
+
+    
+    document.getElementById('questionForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const userQuestion = document.getElementById('userQuestion').value;
+      const outputElement = document.getElementById('output');
+
+      if (userQuestion) {
+        outputElement.textContent = 'Loading...';
+
+        try {
+          
+          const response = await fetch('/api/ask', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: userQuestion }),
+          });
+
+          const data = await response.json();
+          if (data && data.answer) {
+            outputElement.textContent = `ChatGPT says: ${data.answer}`;
+          } else {
+            outputElement.textContent = 'No answer received.';
+          }
+        } catch (error) {
+          outputElement.textContent = 'Error occurred. Please try again later.';
+          console.error('Error fetching response:', error);
+        }
+      } else {
+        outputElement.textContent = 'Please enter a question.';
+      }
+    });
+  </script>
+</body>
+
+</html>

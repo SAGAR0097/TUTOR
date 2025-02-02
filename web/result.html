@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Tutor - Result</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="images.jpeg" alt="PYTHON TUTOR" class="logo">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <section id="home">
+      <h1>Python Tutor Results</h1>
+      <p>Here is the result of your query:</p>
+
+      <div id="user-input">
+        
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Python Tutor. All rights reserved.</p>
+  </footer>
+
+  <script>
+
+    function getQueryStringParams() {
+      const params = new URLSearchParams(window.location.search);
+      const prompt = params.get('prompt');
+      return prompt;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const prompt = getQueryStringParams();
+      const userInputElement = document.getElementById('user-input');
+      if (prompt) {
+        userInputElement.textContent = `You asked: "${prompt}"`;
+      } else {
+        userInputElement.textContent = "No question provided!";
+      }
+    });
+  </script>
+</body>
+
+</html>
